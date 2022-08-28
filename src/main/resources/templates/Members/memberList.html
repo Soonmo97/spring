@@ -1,0 +1,26 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div class="container">
+  <div>
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>이름</th>
+        </tr>
+      </thead>
+
+      <tbody>
+          <tr th:each="member : ${members}">  <!-- each는 thymeleaf 문법으로 Loop를 돌려줌
+                                                   자바의 for ~ each문과 비슷함 객체를 가져와서 member에 담아줌
+                                               -->
+            <td th:text="${member.id}"></td>  <!-- getid() -->
+            <td th:text="${member.name}"></td>  <!-- getName() -->
+          </tr>
+      </tbody>
+    </table>
+  </div>
+</div> <!-- /container -->
+</body>
+</html>
