@@ -3,36 +3,29 @@ package hello.hellospring.service;
 import hello.hellospring.domain.Member;
 import hello.hellospring.repository.MemberRepository;
 import hello.hellospring.repository.MemoryMemberRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Commit;
+import org.springframework.transaction.annotation.Transactional;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-/** 단위테스트 */
-// 스프링없이 순수 자바 테스트
-// 진짜 좋은 테스트는 이런 단위 테스트로 잘 만드는 것.
-class MemberServiceTest {
-    MemberService memberService;
-    MemoryMemberRepository memberRepository;
+/** 통합테스트 */
+// 스프링 서버를 띄우고 DB까지 연동한 테스트
+// 가급적 단위테스트로 잘 만드는 것이 좋은 테스트이지만 필요할 때는 통합테스트로 작성.
 
+@SpringBootTest // 스프링 컨테이너와 테스트를 함께 실행한다.
+@Transactional // 테스트가 끝나면 롤백을 해서 DB 데이터가 깔끔하게 지워지기 때문에 다음 테스트에 영향을 주지 않는다.
+class MemberServiceIntegrationTest {
+    @Autowired MemberService memberService;
+    @Autowired MemberRepository memberRepository;
 
-    // DI = Dependency injection 외부에서 넣어준다.
-    @BeforeEach
-    public void beforeEach() {
-        memberRepository = new MemoryMemberRepository();
-        memberService = new MemberService(memberRepository);
-    }
-
-    @AfterEach  // 테스트 하나 실행 후 클리어
-    public void afterEach() {
-        memberRepository.clearStore();
-    }
-
-    // 테스트는 과감하게 메소드명 한글로 바꿔도 된다. 빌드 될 때 실제 코드로 적용되지 않기 떄문에
     @Test
+    //@Commit
     void 회원가입() {
         // given
         Member member = new Member();
@@ -70,11 +63,4 @@ class MemberServiceTest {
         //then
     }
 
-    @Test
-    void findMembers() {
-    }
-
-    @Test
-    void findOne() {
-    }
 }
